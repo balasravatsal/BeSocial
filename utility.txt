@@ -1,0 +1,48 @@
+
+<!--        <div class="col-12">-->
+<!--            <h2>Leave a Feedback</h2>-->
+<!--            <form action="/ngos/<%= please.ngo.id %>/feedbacks" method="POST" class="mb-3 validated-form" novalidate>-->
+<!--                <div class="mb-3">-->
+<!--                    <label class="form-label" for="rating">Rating</label>-->
+<!--                    <input class="form-range" type="range" min="1" max="5" name="rating" id="rating">-->
+<!--                </div>-->
+<!--                <div class="mb-3">-->
+<!--                    <label class="form-label" for="body">Feedback</label>-->
+<!--                    <textarea class="form-control" name="body" id="body" cols="30" rows="3" required></textarea>-->
+<!--                    <div class="valid-feedback">-->
+<!--                        Looks good!-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="mb-3">-->
+<!--                    <input class="btn btn-success" type="submit" value="Upload"/>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+
+<!--        <% for(let fb of please.feedback) { %>-->
+<!--            <div class="card mb-3 ">-->
+<!--                <div class="card-body">-->
+<!--                    <h5 class="card-title">Rating: <%= fb.rating %></h5>-->
+<!--                    <p class="card-text">Feedback: <%= fb.body %></p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        <% } %>-->
+
+
+
+
+    // con.query(query, [id, id], {multipleStatements: true}, (error, result, fields) => {
+    //     if (error) throw error;
+    //     const ngo = result[0][0]
+    //     const feedback = result[1]
+    //     res.render('ngos/show', {feedback: feedback, ngo: ngo})
+    // })
+    // con.query(query, [id, id], function(error, results, fields) {
+    //     if (error) {
+    //         throw error;
+    //     } else {
+    //         const ngo = results[0][0];
+    //         const feedback = results[1];
+    //         res.render('ngos/show', { ngo, feedback });
+    //     }
+    // });

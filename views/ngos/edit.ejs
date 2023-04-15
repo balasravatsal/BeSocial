@@ -1,0 +1,41 @@
+<% layout('layouts/boilerplate') %>
+
+
+<div class="row">
+    <h1 class="text-center">Update NGO</h1>
+    <div class="col-6 offset-3">
+        <form action="/ngos/<%= ngo.id %>" method="POST" novalidate class="validated-form">
+
+            <div class="mb-3">
+                <label class="form-label" for="title">Title</label>
+                <input class="form-control" type="text" id="title" name="title" value="<%= ngo.title %>" required/>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="description">Description</label>
+                <input class="form-control" type="text" id="description" name="description"
+                       value="<%= ngo.description %>" required/>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="location">Location</label>
+                <input class="form-control" type="text" id="location" name="location" value="<%= ngo.location %>"
+                       required/>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mb-3">
+                <input class="btn btn-success" type="submit" value="Update NGO"/>
+            </div>
+        </form>
+        <a href="/ngos/<%= ngo.id %>">Back to Details</a>
+    </div>
+</div>
+
+
+
