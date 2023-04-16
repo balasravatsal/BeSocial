@@ -21,6 +21,7 @@ app.use(methodeOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
 
 
+
 const sessionConfig = {
     secret: 'make better secret',
     resave: false,
