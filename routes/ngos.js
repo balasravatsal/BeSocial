@@ -3,6 +3,10 @@ const catchAsync = require("../views/utils/catchAsync");
 const con = require("../models/ngo");
 const router = express.Router()
 const { v4: UUID } = require('uuid');
+const {Strategy: LocalStrategy} = require("passport-local");
+
+
+
 
 router.get('/', catchAsync(async (req, res) => {
 

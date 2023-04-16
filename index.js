@@ -7,11 +7,11 @@ const ejsMate = require('ejs-mate')
 const catchAsync = require('./views/utils/catchAsync')
 const session = require('express-session')
 const flash = require('connect-flash')
-const ngos = require('./routes/ngos')
-const feedback = require('./routes/feedback')
+const ngoRoutes = require('./routes/ngos')
+const feedbackRoutes = require('./routes/feedback')
 const passport = require('passport')
-const LocalStrategy = require('passport-local')
-
+const LocalStrategy = require('passport-local').Strategy
+const userRoutes = require('./routes/users')
 
 const app = express()
 
@@ -19,7 +19,6 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(methodeOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
-
 
 
 const sessionConfig = {
@@ -37,9 +36,6 @@ app.use(session(sessionConfig))
 app.use(flash())
 
 
-////////////////////////////////////////////////////////////////////////
-
-
 
 
 app.engine('ejs', ejsMate)
@@ -54,9 +50,7 @@ app.use((req, res, next)=>{
 })
 
 
-// ROute handlers
-app.use('/ngos', ngos)
-app.use('/ngos/:id/feedbacks', feedback)
+
 
 app.get('/', (req, res) => {
     res.render('home')
@@ -65,6 +59,11 @@ app.get('/', (req, res) => {
 
 // ngo router
 // feedback router
+
+// Route handlers
+app.use('/ngos', ngoRoutes)
+app.use('/ngos/:id/feedbacks', feedbackRoutes)
+app.use('/', userRoutes)
 
 app.use((err, req, res, next) => {
     const {statusCode = 500} = err
