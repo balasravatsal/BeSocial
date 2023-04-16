@@ -12,6 +12,7 @@ const feedbackRoutes = require('./routes/feedback')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const userRoutes = require('./routes/users')
+const MySQLStore = require('express-mysql-session')(session);
 
 const app = express()
 
@@ -21,18 +22,31 @@ app.use(methodeOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
 
 
-const sessionConfig = {
-    secret: 'make better secret',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        httpOnly: true,
-        expires: Date.now() + 1000 * 60 * 24 * 7,
-        maxAge: 1000 * 60 * 24 * 7
+const sessionStore = new MySQLStore({
+    expiration: 86400000, // session expires in 24 hours
+    createDatabaseTable: true,
+    clearExpired: true,
+    checkExpirationInterval: 900000, // 15 minutes
+    connectionLimit: 1,
+    schema: {
+        tableName: 'sessions',
+        columnNames: {
+            session_id: 'session_id',
+            expires: 'expires',
+            data: 'data'
+        }
     }
-}
+}, con);
 
-app.use(session(sessionConfig))
+app.use(session({
+    secret: 'mysecret', // replace with your secret
+    resave: false,
+    saveUninitialized: false,
+    store: sessionStore
+}));
+
+
+app.use(session(sessionStore))
 app.use(flash())
 
 

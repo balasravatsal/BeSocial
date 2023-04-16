@@ -18,7 +18,15 @@ router.get('/', catchAsync(async (req, res) => {
 }))
 
 router.get('/new', (req, res) => {
-    res.render('ngos/new')
+    if (req.session.user) {
+        // user is logged in
+        // render the page or do any authenticated action
+        res.render('ngos/new');
+    } else {
+        // user is not logged in
+        // redirect to the login page
+        res.redirect('/login');
+    }
 })
 
 router.post('/', catchAsync(async (req, res) => {

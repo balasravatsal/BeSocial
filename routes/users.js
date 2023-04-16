@@ -35,11 +35,10 @@ router.post('/register', catchAsync(async (req, res) => {
 router.get('/login', (req, res) => {
     res.render('users/login')
 })
-
 router.post('/login', (req, res) => {
 
-    const {username, password} = req.body
-    const querySelect = `SELECT * FROM userSchema WHERE username = ?`
+    const {username, password} = req.body;
+    const querySelect = `SELECT * FROM userSchema WHERE username = ?`;
 
     con.query(querySelect, [username], (err, results) => {
         if (err) {
@@ -47,28 +46,26 @@ router.post('/login', (req, res) => {
             res.redirect('/login');
         } else {
             if (results.length > 0) {
-                const user = results[0]
+                const user = results[0];
                 bcrypt.compare(password, user.password, (e, result) => {
                     if (err) {
                         console.error('Error comparing passwords: ', err);
                         res.redirect('/login');
                     } else {
                         if (result) {
-                            req.session.user = user;
+                            req.session.user = user; // set the session variable
                             req.flash('success', 'Welcome back to Be Social')
                             res.redirect('/ngos')
                         } else {
                             console.log('Invalid email or password!');
                         }
                     }
-                })
+                });
             } else {
                 console.log('Invalid email or password!');
             }
         }
-
-    })
-})
-
+    });
+});
 
 module.exports = router
