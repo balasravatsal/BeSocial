@@ -23,7 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 
 const sessionStore = new MySQLStore({
-    expiration: 86400000, // session expires in 24 hours
+    expiration: 960000,
     createDatabaseTable: true,
     clearExpired: true,
     checkExpirationInterval: 900000, // 15 minutes
@@ -58,6 +58,7 @@ app.set('views', path.join(__dirname, 'views'))
 
 
 app.use((req, res, next)=>{
+    res.locals.currentUser = req.session.user
     res.locals.success = req.flash('success')
     res.locals.error = req.flash('error')
     next()

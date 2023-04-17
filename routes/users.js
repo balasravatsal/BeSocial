@@ -1,8 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const con = require('../models/ngo')
-const passport = require('passport')
-const LocalStrategy = require('passport-local').Strategy
 const bcrypt = require('bcrypt');
 const catchAsync = require("../views/utils/catchAsync");
 
@@ -64,6 +62,20 @@ router.post('/login', (req, res) => {
             } else {
                 console.log('Invalid email or password!');
             }
+        }
+    });
+});
+
+router.get('/logout', (req, res) => {
+    // Clear the user session
+    req.session.destroy(err => {
+        if (err) {
+            console.error('Error destroying session: ', err);
+        } else {
+            // Clear the cookie containing the session ID
+            res.clearCookie('connect.sid');
+            // Redirect the user to the login page
+            res.redirect('/ngos');
         }
     });
 });

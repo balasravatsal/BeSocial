@@ -11,6 +11,7 @@
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item text-muted"><%= ngo.location %></li>
+                <li class="list-group-item text-muted">Admin: <%= admin.username %><br>Contact: <%=admin.email%></li>
             </ul>
             <div class="card-body">
                 <a class="card-link btn btn-info" href="/ngos/<%= ngo.id %>/edit">Edit</a>
