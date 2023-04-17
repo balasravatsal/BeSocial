@@ -8,7 +8,7 @@ const {CLIENT_ODBC} = require("mysql/lib/protocol/constants/client");
 
 
 router.get('/', catchAsync(async (req, res) => {
-    // console.log(req.session.user)
+    // console.log(req.session)
     const sql = `SELECT * FROM ngoSchema`
     await con.query(sql, (error, result) => {
         if (error) console.log('\n\n\n\n\nERROR!!!!\n\n\n\n\n' + error)
@@ -37,11 +37,6 @@ router.post('/', catchAsync(async (req, res) => {
     const userID = await req.session.user.userID
 
 
-
-
-
-
-
     const queryAdd = `insert into ngoSchema (id, title, description, location, userID) values (?, ?, ?, ?, ?)`
     await con.query(queryAdd, [id, title, description, location, userID], (error, result) => {
         if (error) console.log('\n\n\n\n\nERROR!!!!\n\n\n\n\n' + error)
@@ -52,29 +47,45 @@ router.post('/', catchAsync(async (req, res) => {
 
 router.get('/:id', catchAsync(async (req, res) => {
     const ngoID = await req.params.id
-    const userID = await req.session.user.userID
+    // const userID = await req.session.user.userID
     const queryShow = `SELECT * from ngoSchema where id = ?`
     const queryFeedback = `SELECT * from feedbackSchema where ngoID = ?`
 
-    const adminDetails = `SELECT * from userSchema where userID = ?`
-    con.query(adminDetails, [userID], (err, aResult) => {
-            if (err) {
-                return res.status(500).send(err);
-            } else {
-                con.query(queryShow, [ngoID], (error, nResult) => {
-                    if (error) {
-                        return res.status(500).send(error);
+    con.query(`SELECT userID from ngoSchema Where id = ?`, [ngoID], (er, result) => {
+        if (er) console.log('bad')
+        else {
+            const aData = result[0].userID && result[0].userID.toString();
+            const adminDetails = `SELECT * from userSchema where userID = ?`
+            con.query(adminDetails, [aData], (err, aResult) => {
+                    if (err) {
+                        return res.send("This NGO does not have an admin");
+                    } else {
+                        con.query(queryShow, [ngoID], (error, nResult) => {
+                            if (error) {
+                                return res.status(500).send(error);
+                            }
+                            con.query(queryFeedback, [ngoID], (error, fResult) => {
+                                if (error) {
+                                    return res.status(500).send(error);
+                                }
+                                // con.query(`SELECT * FROM userSchema WHERE userID = ?`, [fResult.userID])
+                                // console.log(fResult)
+
+
+                                res.render('ngos/show', {
+                                    ngo: nResult[0],
+                                    feedback: fResult,
+                                    admin: aResult[0],
+                                    currentUser: req.session.user,
+                                    req: req
+                                })
+                            })
+                        })
                     }
-                    con.query(queryFeedback, [ngoID], (error, fResult) => {
-                        if (error) {
-                            return res.status(500).send(error);
-                        }
-                        res.render('ngos/show', {ngo: nResult[0], feedback: fResult, admin: aResult[0]})
-                    })
-                })
-            }
+                }
+            )
         }
-    )
+    })
 }))
 
 router.get('/:id/edit', catchAsync(async (req, res) => {

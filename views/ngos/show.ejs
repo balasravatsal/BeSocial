@@ -11,48 +11,60 @@
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item text-muted"><%= ngo.location %></li>
-                <li class="list-group-item text-muted">Admin: <%= admin.username %><br>Contact: <%=admin.email%></li>
+                <li class="list-group-item text-muted">Admin: <%= admin.username %><br>Contact: <%= admin.email %></li>
             </ul>
-            <div class="card-body">
-                <a class="card-link btn btn-info" href="/ngos/<%= ngo.id %>/edit">Edit</a>
-                <form class="d-inline" action="/ngos/<%= ngo.id %>?_method=DELETE" method="POST">
-                    <button class="btn btn-danger">Delete</button>
-                </form>
-            </div>
+            <% if (req.session.user && req.session.user.userID === ngo.userID) { %>
+                <div class="card-body">
+                    <a class="card-link btn btn-info" href="/ngos/<%= ngo.id %>/edit">Edit</a>
+                    <form class="d-inline" action="/ngos/<%= ngo.id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            <% } %>
             <div class="card-footer text-muted">
                 2 days ago
             </div>
         </div>
     </div>
     <div class="col-6">
-        <div class="col-12">
-            <h2>Leave a Feedback</h2>
-            <form action="/ngos/<%= ngo.id %>/feedbacks" method="POST" class="mb-3 validated-form" novalidate>
-                <div class="mb-3">
-                    <label class="form-label" for="rating">Rating</label>
-                    <input class="form-range" type="range" min="1" max="5" name="rating" id="rating">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="body">Feedback</label>
-                    <textarea class="form-control" name="body" id="body" cols="30" rows="3" required></textarea>
-                    <div class="valid-feedback">
-                        Looks good!
+        <% if(currentUser) { %>
+            <div class="col-12">
+                <h2>Leave a Feedback</h2>
+                <form action="/ngos/<%= ngo.id %>/feedbacks" method="POST" class="mb-3 validated-form" novalidate>
+                    <div class="mb-3">
+                        <label class="form-label" for="rating">Rating</label>
+                        <input class="form-range" type="range" min="1" max="5" name="rating" id="rating">
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="body">Feedback</label>
+                        <textarea class="form-control" name="body" id="body" cols="30" rows="3" required></textarea>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <input class="btn btn-success" type="submit" value="Upload"/>
+                    </div>
+                </form>
+            </div>
+        <% } else { %>
+            <div class="col-12">
+                <div class="container mb-3">
+                    <h2>Sign in to give Feedback</h2>
                 </div>
-                <div class="mb-3">
-                    <input class="btn btn-success" type="submit" value="Upload"/>
-                </div>
-            </form>
-        </div>
-
+            </div>
+        <% } %>
         <% for(let fb of feedback) { %>
             <div class="card mb-3 ">
                 <div class="card-body">
                     <h5 class="card-title">Rating: <%= fb.rating %></h5>
+                    <h6 class="card-subtitle mb-2 text-muted"> <%= fb.author %> </h6>
                     <p class="card-text">Feedback: <%= fb.body %></p>
-                    <form action="/ngos/<%= ngo.id %>/feedbacks/<%= fb.feedbackID %>?_method=DELETE" method="post">
-                        <button class="btn btn-sm btn-danger">Delete</button>
-                    </form>
+                    <% if (req.session.user && req.session.user.username === fb.author) { %>
+                        <form action="/ngos/<%= ngo.id %>/feedbacks/<%= fb.feedbackID %>?_method=DELETE" method="post">
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    <% } %>
                 </div>
             </div>
         <% } %>
