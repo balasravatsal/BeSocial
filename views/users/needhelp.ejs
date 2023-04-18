@@ -1,0 +1,27 @@
+<% layout('layouts/boilerplate')%>
+<h1>Want help?</h1>
+<h2>Register to find Institutes that can help</h2>
+<form action="/needhelp" method="POST" class="validated-form" novalidate>
+    <div class="mb-3">
+        <label class="form-label" for="needyUsername">Username</label>
+        <input class="form-control" type="text" id="needyUsername" name="needyUsername" required>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="email">Email</label>
+        <input class="form-control" type="email" id="email" name="email" required>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="password">Password</label>
+        <input class="form-control" type="password" id="password" name="password" required>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+    </div>
+    <button class="btn btn-success">Register</button>
+</form>

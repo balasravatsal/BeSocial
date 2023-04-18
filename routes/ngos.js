@@ -68,10 +68,6 @@ router.get('/:id', catchAsync(async (req, res) => {
                                 if (error) {
                                     return res.status(500).send(error);
                                 }
-                                // con.query(`SELECT * FROM userSchema WHERE userID = ?`, [fResult.userID])
-                                // console.log(fResult)
-
-
                                 res.render('ngos/show', {
                                     ngo: nResult[0],
                                     feedback: fResult,

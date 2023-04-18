@@ -9,18 +9,27 @@ router.post('/', catchAsync((req, res) => {
     const id = req.params.id
     const rating = req.body.rating
     const body = req.body.body
-    const stringauthor = req.session.user.username && req.session.user.username.toString();
+    let help = 0
+    // const stringauthor = req.session.user.username && req.session.user.username.toString();
 
-    // console.log(req.session)
-    // console.log(body)
-    // console.log(stringUserID)
-    const queryFeedback = `insert into feedbackSchema () values (UUID(), ?, ?, ?, ?)`
-    con.query(queryFeedback, [body, rating, id, stringauthor], (error, result) => {
+    let stringauthor = -1
+    if(req.session.user.username) {
+        stringauthor = req.session.user.username.toString();
+    } else if(req.session.user.needyUsername){
+        stringauthor = req.session.user.needyUsername.toString();
+        help = 1
+    }
+    // console.log(help)
+    // console.log(stringauthor)
+    // console.log(req.session.user)
+    // console.log(req.body)
+    const queryFeedback = `insert into feedbackSchema () values (UUID(), ?, ?, ?, ?, ?)`
+    con.query(queryFeedback, [body, rating, id, stringauthor, help], (error, result) => {
         if (error) console.log('\n\n\n\n\nERROR!!!!\n\n\n\n\n' + error)
     })
 
     req.flash('success', 'Added feedback')
-    return res.redirect(`/ngos/${id}`)
+    res.redirect(`/ngos/${id}`)
 
 }))
 
@@ -35,6 +44,7 @@ router.delete('/:feedbackID', catchAsync(async (req, res) => {
     })
     res.redirect(`/ngos/${id}`)
 }))
+
 
 module.exports = router
 

@@ -59,8 +59,16 @@
                 <div class="card-body">
                     <h5 class="card-title">Rating: <%= fb.rating %></h5>
                     <h6 class="card-subtitle mb-2 text-muted"> <%= fb.author %> </h6>
+                    <% if(fb.help === 1){ %>
+                        <h5 class="card-subtitle mb-2 text-success"> Wants help! </h5>
+                    <% } %>
                     <p class="card-text">Feedback: <%= fb.body %></p>
                     <% if (req.session.user && req.session.user.username === fb.author) { %>
+                        <form action="/ngos/<%= ngo.id %>/feedbacks/<%= fb.feedbackID %>?_method=DELETE" method="post">
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    <% } %>
+                    <% if(req.session.user && req.session.user.needyUsername === fb.author){  %>
                         <form action="/ngos/<%= ngo.id %>/feedbacks/<%= fb.feedbackID %>?_method=DELETE" method="post">
                             <button class="btn btn-sm btn-danger">Delete</button>
                         </form>

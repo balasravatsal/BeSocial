@@ -55,7 +55,7 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 
 
-app.use((req, res, next) => {
+app.use((req, res, next)=>{
     res.locals.currentUser = req.session.user
     res.locals.success = req.flash('success')
     res.locals.error = req.flash('error')
